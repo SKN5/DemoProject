@@ -1,34 +1,51 @@
 @echo off
 setlocal
+
 where java >nul 2>nul
 if errorlevel 1 (
-  echo ERROR: JDK not found on the build computer.
+  echo ERROR: Java was not found on the build computer.
   pause
   exit /b 1
 )
+
 where mvn >nul 2>nul
 if errorlevel 1 (
-  echo ERROR: Maven not found on the build computer.
+  echo ERROR: Maven was not found on the build computer.
   pause
   exit /b 1
 )
+
+echo Building the self-contained Java JAR...
 call mvn clean package
 if errorlevel 1 (
   echo ERROR: Maven build failed.
   pause
   exit /b 1
 )
-if exist dist rmdir /s /q dist
-mkdir dist
-jpackage --type app-image --name DigitalVotingSystem --input target --main-jar digital-voting-system-1.0.jar --main-class voting.Main --dest dist --app-version 1.0 --vendor "Student OOP Project" --description "Digital Voting System - Java Swing and SQLite"
-if errorlevel 1 (
-  echo ERROR: jpackage failed. Use JDK 17 or newer.
+
+if not exist target\digital-voting-system-1.0.jar (
+  echo ERROR: Shaded JAR was not created.
   pause
   exit /b 1
 )
+
+if exist dist rmdir /s /q dist
+mkdir dist
+copy /y target\digital-voting-system-1.0.jar dist\digital-voting-system.jar >nul
+copy /y run-portable.bat dist\run-voting-system.bat >nul
+
 echo.
 echo BUILD COMPLETE
-echo Portable app: dist\DigitalVotingSystem\DigitalVotingSystem.exe
-echo Copy the entire DigitalVotingSystem folder to another PC.
-echo No administrator installation, XAMPP, or Java installation is required on the target PC.
+echo.
+echo Deployment folder:
+echo dist
+echo.
+echo Files:
+echo   dist\digital-voting-system.jar
+echo   dist\run-voting-system.bat
+echo.
+echo The target PC only needs Java installed.
+echo No Maven, XAMPP, MySQL, SQLite installation, Git, or Windows administrator rights are required.
+echo Copy the entire dist folder to the target PC.
+echo.
 pause
