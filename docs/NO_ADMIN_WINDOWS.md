@@ -1,63 +1,117 @@
 # Running Without Administrator Rights
 
-The Windows version is designed as a portable application image, not a system-wide installer.
+The Windows deployment is designed for a target computer where **Java is already installed but other development/database software cannot be installed without administrator approval**.
 
 ## Target computer
 
-The finished portable build includes its own Java runtime and SQLite JDBC dependency.
+The target user only needs:
 
-The target user does not need:
+- Java available through the `java` command
+- Permission to run Java applications
+
+The target does **not** need:
+
 - Administrator privileges
+- Maven
+- JDK
 - XAMPP
 - MySQL
-- Maven
+- SQLite installed separately
 - Git
-- A separate Java installation
+- Internet access
 
-## Build
+The SQLite JDBC driver is already packaged inside the application's shaded JAR.
 
-The build computer needs JDK 17 or newer and Maven.
+## Build computer
 
-From the repository root:
+The build computer needs:
 
+- JDK 8+
+- Maven
+
+From the repository root, run:
+
+```text
 package-portable.bat
+```
 
-The output is:
+The script runs:
 
-dist\DigitalVotingSystem\DigitalVotingSystem.exe
+```text
+mvn clean package
+```
 
-## Move to another computer
+and copies the resulting self-contained JAR into:
 
-Copy the entire DigitalVotingSystem folder from dist to Desktop, Documents, Downloads, or a USB drive.
+```text
+dist/
+├── digital-voting-system.jar
+└── run-voting-system.bat
+```
 
-Then double-click DigitalVotingSystem.exe.
+## Move to the restricted computer
 
-Do not copy only the EXE. The folder contains the bundled Java runtime and required files.
+Copy the entire `dist` folder to a location the normal user can access, such as:
 
-## Why no administrator rights are needed
+- Desktop
+- Documents
+- Downloads
+- USB storage
 
-The project uses jpackage with --type app-image. This creates a self-contained application directory instead of a system-wide installer.
+Then double-click:
+
+```text
+run-voting-system.bat
+```
+
+The batch file runs:
+
+```text
+java -jar digital-voting-system.jar
+```
+
+No installation is performed.
+
+## Why administrator rights are not required
+
+The application is not installed into `Program Files`, does not create a Windows service, and does not require Maven or XAMPP.
 
 The SQLite database is stored at:
 
-%USERPROFILE%\.digital-voting-system\voting.db
+```text
+%USERPROFILE%\\.digital-voting-system\\voting.db
+```
 
-This is inside the normal user's profile and does not require write access to Program Files.
+This location belongs to the current Windows user and normally does not require administrator access.
+
+## Java version
+
+The source is compatible with Java 8+. The target machine only needs a compatible Java runtime/JDK.
+
+You can verify Java on the target computer with:
+
+```text
+java -version
+```
+
+If `java` is not available, the project cannot install it without administrator rights; the machine administrator would need to provide Java.
 
 ## Application Admin vs Windows Administrator
 
-The application's ADMIN role is separate from Windows administrator privileges.
+The application's **ADMIN** role is completely separate from Windows administrator privileges.
 
-A normal Windows user can run the application. The ADMIN role only controls project features such as candidate/voter management and audit-log access.
+A normal Windows user can launch the application. The ADMIN role only controls project features such as candidate/voter management and audit-log access.
 
 ## Demo credentials
 
-Admin: admin / admin123
-Candidate: candidate / candidate123
-Voter: voter / voter123
+Admin: `admin / admin123`
+
+Candidate: `candidate / candidate123`
+
+Voter: `voter / voter123`
 
 These credentials are for the educational project only.
 
-## SmartScreen
+## Security policy limitation
 
-A locally built executable may trigger Windows SmartScreen because it is not digitally signed. That is separate from administrator privileges. Production deployment should use code signing.
+If the school/lab computer has a policy that blocks Java execution, unknown JAR files, batch files, or applications from USB/Downloads, the project cannot and should not bypass that policy. The administrator would need to allow the application.
