@@ -1,2 +1,1 @@
-# Project
-Java Project
+# Voting System - Java Project
