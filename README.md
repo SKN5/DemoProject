@@ -1,155 +1,99 @@
-# Digital Voting System
+# Digital Voting System — DEMO UI
 
-**Student OOP Project — Educational / Demo Use**
+# DEMO — UI PROTOTYPE ONLY
 
-This repository contains the Digital Voting System project with both the original browser UI prototype and the standalone Java Swing application.
+This repository contains a **DEMO UI PROTOTYPE** for the Digital Voting System OOPS project. It is designed to demonstrate the screens, navigation and user flows before implementing the same interface in Java Swing/JavaFX.
 
-## Standalone Java application
 
-The actual application uses:
+## Goal
 
-- Java Swing
-- JDBC
-- SQLite
-- SHA-256 password hashing
-- Transaction/rollback for voting
-- Database uniqueness for one vote per voter
-- Audit logging
-- Admin, Candidate and Voter roles
+The browser version is temporary. The interface and flows are intentionally limited to features that can be implemented in the actual Java application.
 
-The Java source is under:
+### Planned Java implementation
 
-`src/main/java/voting/`
+- **Java Swing/JavaFX** — user interface
+- **Java** — application logic
+- **JDBC** — database access
+- **SQLite** — persistent database
+- **SHA-256** — password hashing concept specified by the project
+- Database uniqueness — duplicate-vote prevention
+- Transactions/rollback — atomic vote operations
+- Audit records — accountability
 
-## Run during development
+## DEMO screens
 
-Requirements on the development computer:
+- **Admin**
+  - Overview
+  - Candidate management
+  - Voter management
+  - Results
+  - Audit log
+- **Candidate**
+  - Candidate dashboard
+  - Results
+  - Audit log
+- **Voter**
+  - Voter dashboard
+  - Candidate selection
+  - Vote confirmation
+  - Results
 
-- JDK 8+ for the Java source
-- Maven
-- JDK 17+ is not required for the target computer
+## DEMO limitations
 
-Run:
+The browser demo intentionally uses simulated in-memory data.
 
-```bash
-mvn clean package
-java -jar target/digital-voting-system-1.0.jar
-```
+- Any non-empty username/password is accepted.
+- No real authentication occurs.
+- No real SHA-256 password verification occurs.
+- Votes are not written to SQLite.
+- Data disappears when the page is refreshed.
+- The displayed candidates/voters are sample data.
+- The demo cannot provide real election security.
 
-Or:
+The actual Java project must implement the database and security requirements.
 
-```bash
-mvn compile exec:java
-```
+## Mapping to the project specification
 
-## Windows: target computer has Java only
+The supplied project describes methods/modules including:
 
-The intended deployment is a **plain Java JAR**. The target computer does not need a Java development environment or any database/server software.
+1. `connect()`
+2. `initDatabase()`
+3. `hash()`
+4. `auth()`
+5. `login()`
+6. `manage()`
+7. `vote()`
+8. `tally()`
 
-The build computer runs:
+The DEMO only visualizes the user-facing behavior of these requirements. It does not replace their Java implementation.
 
-```text
-package-portable.bat
-```
+## Files
 
-This runs Maven and creates:
+- `index.html` — DEMO login and application shell
+- `style.css` — responsive DEMO UI styling
+- `app.js` — DEMO interactions and temporary in-memory state
 
-```text
-dist/
-├── digital-voting-system.jar
-└── run-voting-system.bat
-```
+## Run
 
-Copy the entire `dist` folder to the target Windows computer.
+Open `index.html` directly or use VS Code Live Server.
 
-Then double-click:
+## Java feasibility
 
-```text
-run-voting-system.bat
-```
+The UI uses ordinary concepts that map directly to Java Swing components:
 
-The target computer needs only:
+| DEMO UI | Java Swing equivalent |
+|---|---|
+| Login form | JFrame + JPanel + JLabel + JTextField + JPasswordField + JComboBox + JButton |
+| Navigation | JPanel + JButton |
+| Dashboard cards | JPanel + JLabel |
+| Tables | JTable + JScrollPane |
+| Candidate cards | JPanel + JButton |
+| Confirmation dialog | JOptionPane |
+| Audit log | JTable/JTextArea |
+| Results | JTable/JPanel with progress indicators |
 
-- Java installed and available through `java`
-- Permission to run Java applications
+The database operations can then be connected through JDBC to SQLite.
 
-It does **not** need:
+## GitHub Pages
 
-- Windows administrator privileges
-- Maven
-- XAMPP
-- MySQL
-- SQLite installed separately
-- Git
-- JDK
-- Internet access
-
-The SQLite JDBC driver is packaged inside the application JAR, so there is no separate SQLite installation.
-
-### Database location
-
-The application stores SQLite data in the current Windows user's profile:
-
-```text
-%USERPROFILE%\\.digital-voting-system\\voting.db
-```
-
-This avoids writing to protected locations such as `Program Files`.
-
-See [docs/NO_ADMIN_WINDOWS.md](docs/NO_ADMIN_WINDOWS.md) for the deployment procedure.
-
-## Demo credentials
-
-| Role | Username | Password |
-|---|---|---|
-| Admin | `admin` | `admin123` |
-| Candidate | `candidate` | `candidate123` |
-| Voter | `voter` | `voter123` |
-
-These credentials are for the college demonstration only.
-
-## Java project structure
-
-```text
-Project/
-├── pom.xml
-├── package-portable.bat
-├── run-portable.bat
-├── docs/
-│   └── NO_ADMIN_WINDOWS.md
-└── src/
-    └── main/
-        └── java/
-            └── voting/
-                ├── Main.java
-                ├── User.java
-                ├── Candidate.java
-                ├── Security.java
-                ├── VotingSystem.java
-                ├── LoginFrame.java
-                ├── AdminFrame.java
-                ├── CandidateFrame.java
-                └── VoterFrame.java
-```
-
-## Browser UI prototype
-
-The repository also retains the original browser prototype:
-
-- `index.html`
-- `style.css`
-- `app.js`
-
-It can be opened directly in a browser or served with VS Code Live Server.
-
-The browser version is a UI prototype and does not replace the Java/SQLite implementation.
-
-## Important distinction
-
-The application's **ADMIN role** is not the same as a Windows administrator account.
-
-A normal Windows user can launch the Java application. The application's Admin role only controls the project's administrative features.
-
-If the target computer has a policy that blocks unknown Java applications or JAR files, that restriction cannot be bypassed by the project; the system administrator would need to permit the application.
-
-This project is not intended for real elections.
+The root contains `index.html`, so the **DEMO UI** is ready for GitHub Pages.
