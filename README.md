@@ -1,38 +1,61 @@
-# Digital Voting System — UI Prototype
+# Digital Voting System — DEMO UI
 
-Temporary browser UI for the Digital Voting System OOPS project, based on the supplied project specification.
+# DEMO — UI PROTOTYPE ONLY
 
-## Included requirements
+This repository contains a **DEMO UI PROTOTYPE** for the Digital Voting System OOPS project. It is designed to demonstrate the screens, navigation and user flows before implementing the same interface in Java Swing/JavaFX.
 
-- Role-based access: **Admin, Candidate, Voter**
-- SHA-256 authentication concept
-- Admin candidate management
-- Admin voter management
-- One-vote / duplicate-vote prevention
-- Live vote counts and candidate ranking
-- Audit-log view
-- Atomic transaction / rollback concepts
-- Java + JDBC + SQLite as the intended application/database stack
+**THIS IS NOT A REAL VOTING SYSTEM. DO NOT USE IT FOR REAL ELECTIONS OR REAL VOTING.**
 
-The project specification lists Swing/JavaFX as a **future GUI enhancement**, so this repository currently contains the requested temporary HTML UI.
+## Goal
 
-## Files
+The browser version is temporary. The interface and flows are intentionally limited to features that can be implemented in the actual Java application.
 
-- `index.html` — login and application shell
-- `style.css` — responsive interface
-- `app.js` — prototype state and interactions
+### Planned Java implementation
 
-## Run
+- **Java Swing/JavaFX** — user interface
+- **Java** — application logic
+- **JDBC** — database access
+- **SQLite** — persistent database
+- **SHA-256** — password hashing concept specified by the project
+- Database uniqueness — duplicate-vote prevention
+- Transactions/rollback — atomic vote operations
+- Audit records — accountability
 
-Open `index.html` directly or use VS Code Live Server.
+## DEMO screens
 
-Any non-empty username/password is accepted by the prototype. Select a role to see its permitted menu.
+- **Admin**
+  - Overview
+  - Candidate management
+  - Voter management
+  - Results
+  - Audit log
+- **Candidate**
+  - Candidate dashboard
+  - Results
+  - Audit log
+- **Voter**
+  - Voter dashboard
+  - Candidate selection
+  - Vote confirmation
+  - Results
 
-## Production integration
+## DEMO limitations
 
-This is **not the final secure voting backend**. The browser demo stores its state in memory.
+The browser demo intentionally uses simulated in-memory data.
 
-The Java application should implement the project's backend responsibilities:
+- Any non-empty username/password is accepted.
+- No real authentication occurs.
+- No real SHA-256 password verification occurs.
+- Votes are not written to SQLite.
+- Data disappears when the page is refreshed.
+- The displayed candidates/voters are sample data.
+- The demo cannot provide real election security.
+
+The actual Java project must implement the database and security requirements.
+
+## Mapping to the project specification
+
+The supplied project describes methods/modules including:
 
 1. `connect()`
 2. `initDatabase()`
@@ -43,8 +66,35 @@ The Java application should implement the project's backend responsibilities:
 7. `vote()`
 8. `tally()`
 
-Production authentication, SHA-256 password handling, JDBC operations, SQLite persistence, database uniqueness, audit records, and atomic transactions/rollback must be implemented in Java.
+The DEMO only visualizes the user-facing behavior of these requirements. It does not replace their Java implementation.
+
+## Files
+
+- `index.html` — DEMO login and application shell
+- `style.css` — responsive DEMO UI styling
+- `app.js` — DEMO interactions and temporary in-memory state
+
+## Run
+
+Open `index.html` directly or use VS Code Live Server.
+
+## Java feasibility
+
+The UI uses ordinary concepts that map directly to Java Swing components:
+
+| DEMO UI | Java Swing equivalent |
+|---|---|
+| Login form | JFrame + JPanel + JLabel + JTextField + JPasswordField + JComboBox + JButton |
+| Navigation | JPanel + JButton |
+| Dashboard cards | JPanel + JLabel |
+| Tables | JTable + JScrollPane |
+| Candidate cards | JPanel + JButton |
+| Confirmation dialog | JOptionPane |
+| Audit log | JTable/JTextArea |
+| Results | JTable/JPanel with progress indicators |
+
+The database operations can then be connected through JDBC to SQLite.
 
 ## GitHub Pages
 
-The repository root contains `index.html`, so it is ready to be published through GitHub Pages using the `main` branch and root folder.
+The root contains `index.html`, so the **DEMO UI** is ready for GitHub Pages.
