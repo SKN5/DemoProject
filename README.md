@@ -26,8 +26,8 @@ The Java source is under:
 Requirements on the development computer:
 
 - JDK 8+ for the Java source
-- JDK 17+ recommended for packaging
 - Maven
+- JDK 17+ is not required for the target computer
 
 Run:
 
@@ -42,42 +42,49 @@ Or:
 mvn compile exec:java
 ```
 
-## Windows: run without administrator rights
+## Windows: target computer has Java only
 
-The project includes a portable Windows packaging script:
+The intended deployment is a **plain Java JAR**. The target computer does not need a Java development environment or any database/server software.
 
-`package-portable.bat`
-
-On the **build computer**, install JDK 17+ and Maven, then run:
+The build computer runs:
 
 ```text
 package-portable.bat
 ```
 
-It creates:
+This runs Maven and creates:
 
 ```text
-dist\\DigitalVotingSystem\\DigitalVotingSystem.exe
+dist/
+├── digital-voting-system.jar
+└── run-voting-system.bat
 ```
 
-This is an **app-image**, not a system-wide installer.
+Copy the entire `dist` folder to the target Windows computer.
 
-Copy the entire `DigitalVotingSystem` folder to another Windows computer and launch:
+Then double-click:
 
 ```text
-DigitalVotingSystem.exe
+run-voting-system.bat
 ```
 
-The target computer does **not** need:
+The target computer needs only:
+
+- Java installed and available through `java`
+- Permission to run Java applications
+
+It does **not** need:
 
 - Windows administrator privileges
+- Maven
 - XAMPP
 - MySQL
-- Maven
+- SQLite installed separately
 - Git
-- Java installed separately
+- JDK
+- Internet access
 
-The Java runtime is bundled into the application image.
+The SQLite JDBC driver is packaged inside the application JAR, so there is no separate SQLite installation.
 
 ### Database location
 
@@ -141,6 +148,8 @@ The browser version is a UI prototype and does not replace the Java/SQLite imple
 
 The application's **ADMIN role** is not the same as a Windows administrator account.
 
-A normal Windows user can launch the portable application. The application's Admin role only controls the project's administrative features.
+A normal Windows user can launch the Java application. The application's Admin role only controls the project's administrative features.
+
+If the target computer has a policy that blocks unknown Java applications or JAR files, that restriction cannot be bypassed by the project; the system administrator would need to permit the application.
 
 This project is not intended for real elections.
