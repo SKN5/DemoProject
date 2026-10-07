@@ -1,99 +1,146 @@
-# Digital Voting System — DEMO UI
+# Digital Voting System
 
-# DEMO — UI PROTOTYPE ONLY
+**Student OOP Project — Educational / Demo Use**
 
-This repository contains a **DEMO UI PROTOTYPE** for the Digital Voting System OOPS project. It is designed to demonstrate the screens, navigation and user flows before implementing the same interface in Java Swing/JavaFX.
+This repository contains the Digital Voting System project with both the original browser UI prototype and the standalone Java Swing application.
 
+## Standalone Java application
 
-## Goal
+The actual application uses:
 
-The browser version is temporary. The interface and flows are intentionally limited to features that can be implemented in the actual Java application.
+- Java Swing
+- JDBC
+- SQLite
+- SHA-256 password hashing
+- Transaction/rollback for voting
+- Database uniqueness for one vote per voter
+- Audit logging
+- Admin, Candidate and Voter roles
 
-### Planned Java implementation
+The Java source is under:
 
-- **Java Swing/JavaFX** — user interface
-- **Java** — application logic
-- **JDBC** — database access
-- **SQLite** — persistent database
-- **SHA-256** — password hashing concept specified by the project
-- Database uniqueness — duplicate-vote prevention
-- Transactions/rollback — atomic vote operations
-- Audit records — accountability
+`src/main/java/voting/`
 
-## DEMO screens
+## Run during development
 
-- **Admin**
-  - Overview
-  - Candidate management
-  - Voter management
-  - Results
-  - Audit log
-- **Candidate**
-  - Candidate dashboard
-  - Results
-  - Audit log
-- **Voter**
-  - Voter dashboard
-  - Candidate selection
-  - Vote confirmation
-  - Results
+Requirements on the development computer:
 
-## DEMO limitations
+- JDK 8+ for the Java source
+- JDK 17+ recommended for packaging
+- Maven
 
-The browser demo intentionally uses simulated in-memory data.
+Run:
 
-- Any non-empty username/password is accepted.
-- No real authentication occurs.
-- No real SHA-256 password verification occurs.
-- Votes are not written to SQLite.
-- Data disappears when the page is refreshed.
-- The displayed candidates/voters are sample data.
-- The demo cannot provide real election security.
+```bash
+mvn clean package
+java -jar target/digital-voting-system-1.0.jar
+```
 
-The actual Java project must implement the database and security requirements.
+Or:
 
-## Mapping to the project specification
+```bash
+mvn compile exec:java
+```
 
-The supplied project describes methods/modules including:
+## Windows: run without administrator rights
 
-1. `connect()`
-2. `initDatabase()`
-3. `hash()`
-4. `auth()`
-5. `login()`
-6. `manage()`
-7. `vote()`
-8. `tally()`
+The project includes a portable Windows packaging script:
 
-The DEMO only visualizes the user-facing behavior of these requirements. It does not replace their Java implementation.
+`package-portable.bat`
 
-## Files
+On the **build computer**, install JDK 17+ and Maven, then run:
 
-- `index.html` — DEMO login and application shell
-- `style.css` — responsive DEMO UI styling
-- `app.js` — DEMO interactions and temporary in-memory state
+```text
+package-portable.bat
+```
 
-## Run
+It creates:
 
-Open `index.html` directly or use VS Code Live Server.
+```text
+dist\\DigitalVotingSystem\\DigitalVotingSystem.exe
+```
 
-## Java feasibility
+This is an **app-image**, not a system-wide installer.
 
-The UI uses ordinary concepts that map directly to Java Swing components:
+Copy the entire `DigitalVotingSystem` folder to another Windows computer and launch:
 
-| DEMO UI | Java Swing equivalent |
-|---|---|
-| Login form | JFrame + JPanel + JLabel + JTextField + JPasswordField + JComboBox + JButton |
-| Navigation | JPanel + JButton |
-| Dashboard cards | JPanel + JLabel |
-| Tables | JTable + JScrollPane |
-| Candidate cards | JPanel + JButton |
-| Confirmation dialog | JOptionPane |
-| Audit log | JTable/JTextArea |
-| Results | JTable/JPanel with progress indicators |
+```text
+DigitalVotingSystem.exe
+```
 
-The database operations can then be connected through JDBC to SQLite.
+The target computer does **not** need:
 
-## GitHub Pages
+- Windows administrator privileges
+- XAMPP
+- MySQL
+- Maven
+- Git
+- Java installed separately
 
-The root contains `index.html`, so the **DEMO UI** is ready for GitHub Pages.
+The Java runtime is bundled into the application image.
+
+### Database location
+
+The application stores SQLite data in the current Windows user's profile:
+
+```text
+%USERPROFILE%\\.digital-voting-system\\voting.db
+```
+
+This avoids writing to protected locations such as `Program Files`.
+
+See [docs/NO_ADMIN_WINDOWS.md](docs/NO_ADMIN_WINDOWS.md) for the deployment procedure.
+
+## Demo credentials
+
+| Role | Username | Password |
+|---|---|---|
+| Admin | `admin` | `admin123` |
+| Candidate | `candidate` | `candidate123` |
+| Voter | `voter` | `voter123` |
+
+These credentials are for the college demonstration only.
+
+## Java project structure
+
+```text
+Project/
+├── pom.xml
+├── package-portable.bat
+├── run-portable.bat
+├── docs/
+│   └── NO_ADMIN_WINDOWS.md
+└── src/
+    └── main/
+        └── java/
+            └── voting/
+                ├── Main.java
+                ├── User.java
+                ├── Candidate.java
+                ├── Security.java
+                ├── VotingSystem.java
+                ├── LoginFrame.java
+                ├── AdminFrame.java
+                ├── CandidateFrame.java
+                └── VoterFrame.java
+```
+
+## Browser UI prototype
+
+The repository also retains the original browser prototype:
+
+- `index.html`
+- `style.css`
+- `app.js`
+
+It can be opened directly in a browser or served with VS Code Live Server.
+
+The browser version is a UI prototype and does not replace the Java/SQLite implementation.
+
+## Important distinction
+
+The application's **ADMIN role** is not the same as a Windows administrator account.
+
+A normal Windows user can launch the portable application. The application's Admin role only controls the project's administrative features.
+
+This project is not intended for real elections.
