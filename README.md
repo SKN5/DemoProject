@@ -4,7 +4,6 @@
 
 This repository contains a **DEMO UI PROTOTYPE** for the Digital Voting System OOPS project. It is designed to demonstrate the screens, navigation and user flows before implementing the same interface in Java Swing/JavaFX.
 
-**THIS IS NOT A REAL VOTING SYSTEM. DO NOT USE IT FOR REAL ELECTIONS OR REAL VOTING.**
 
 ## Goal
 
